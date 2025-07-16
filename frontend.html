@@ -1,0 +1,177 @@
+<!-- frontend.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Satellite Change Detection | Gaza Conflict Mapping</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0b0e23;
+            --bg-card: #131737;
+            --primary: #1e88e5;
+            --text-light: #e0e6ff;
+            --accent: #ffb300;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+        header {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #20244d;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        main { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid #20244d;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .card h2 { margin-top: 0; font-size: 1.3rem; color: var(--accent); }
+        label { display: block; margin-bottom: 10px; }
+        input[type="file"] { margin-top: 6px;}
+        button {
+            background: var(--primary);
+            border: none;
+            padding: 10px 22px;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover { background: #1565c0; }
+        #result img { max-width: 100%; margin-top: 10px; border: 2px solid #20244d; border-radius: 4px; }
+        .summary-text { white-space: pre-wrap; line-height: 1.5; text-align: justify; margin: 10px 0; }
+        .spinner { animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    </style>
+
+</head>
+<body>
+    <header>
+        <img src="img/logo.png" alt="Project Logo" height="40">
+        <h1>Satellite Change Detection Dashboard</h1>
+    </header>
+    <main>
+        <section class="card">
+            <h2>Upload Satellite Imagery</h2>
+            <form id="uploadForm">
+                <label>Before Image (GeoTIFF / PNG / JPG)
+                    <input type="file" name="before_image" required>
+                </label>
+                <label>After Image (GeoTIFF / PNG / JPG)
+                    <input type="file" name="after_image" required>
+                </label>
+                <label>Pixel Threshold Factor
+                    <input type="number" name="pixel_threshold_factor" value="1.0" step="0.1" min="0.1">
+                </label>
+                <button type="submit">Analyze Changes</button>
+            </form>
+        </section>
+
+        <section class="card" id="result">
+            <h2>Results</h2>
+            <p>No analysis run yet.</p>
+        </section>
+    </main>
+
+    <script>
+        // Helper function to create the map button UI
+        function createMapButton(url) {
+            if (!url) return '<p><em>No change map available.</em></p>';
+            return `
+                <div id="mapContainer">
+                    <button id="showMapBtn" style="margin: 10px 0; padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Show Change Map
+                    </button>
+                    <div id="mapImage" style="display: none; margin-top: 10px;">
+                        <img id="changeMap" alt="Change Map" style="max-width: 100%; border: 2px solid #20244d; border-radius: 4px;">
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Setup the button click handler
+        function setupMapButton() {
+            const btn = document.getElementById('showMapBtn');
+            if (!btn) return;
+            
+            btn.addEventListener('click', async () => {
+                const img = document.getElementById('changeMap');
+                const url = btn.getAttribute('data-url');
+                
+                if (!img || !url) return;
+                
+                // Hide button and show loading
+                btn.style.display = 'none';
+                img.style.display = 'block';
+                img.src = url;
+                
+                // Handle error case
+                img.onerror = () => {
+                    img.style.display = 'none';
+                    btn.style.display = 'block';
+                    img.alt = 'Failed to load change map.';
+                };
+            });
+        }
+
+        document.getElementById('uploadForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = new FormData(form);
+            
+            // Show loading state
+            document.getElementById('result').innerHTML = `<h2>Results</h2><p><span class="spinner">🔄</span> Processing... This may take a few minutes.</p>`;
+
+            try {
+                const response = await fetch('http://localhost:8000/generate-summary', {
+                    method: 'POST',
+                    body: data
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error (${response.status}): ${errorText}`);
+                }
+
+                const result = await response.json();
+                const imgUrl = result.map_overlay_url ? `${window.location.origin}${result.map_overlay_url}` : null;
+
+                document.getElementById('result').innerHTML = `
+                    <h2>Results</h2>
+                    <div><strong>Summary:</strong><div class="summary-text">${result.summary}</div></div>
+                    <p><strong>Confidence:</strong> ${(result.confidence * 100).toFixed(1)}%</p>
+                    ${result.pixel_change_percentage !== undefined ? `<p><strong>Pixel Change Percentage:</strong> ${result.pixel_change_percentage.toFixed(2)}%</p>` : ""}
+                    ${result.conflict_damage_detected ? `<p style="color: var(--accent); font-weight: 700;">⚠️ Conflict Damage Detected</p>` : ""}
+                    ${createMapButton(imgUrl)}
+                `;
+                if (imgUrl) {
+                    document.getElementById('showMapBtn').setAttribute('data-url', imgUrl);
+                    setupMapButton();
+                }
+            } catch (err) {
+                document.getElementById('result').innerHTML = `<h2>Results</h2><p style="color:red;">❌ Error: ${err.message}</p>`;
+            }
+        };
+    </script>
+</body>
+</html>

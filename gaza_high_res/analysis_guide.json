@@ -1,0 +1,26 @@
+{
+  "title": "Gaza Strip High-Resolution Satellite Analysis Guide",
+  "description": "Guide for analyzing high-resolution GeoTIFF files",
+  "files_location": "Google Drive > Gaza_Strip_Satellite_Data",
+  "file_format": "GeoTIFF (.tif)",
+  "resolution": "10m (Sentinel-2)",
+  "coordinate_system": "EPSG:4326 (Geographic)",
+  "bands": {
+    "B4": "Red band",
+    "B3": "Green band",
+    "B2": "Blue band"
+  },
+  "analysis_steps": [
+    "1. Download GeoTIFF files from Google Drive",
+    "2. Use GIS software (QGIS, ArcGIS) for detailed analysis",
+    "3. Upload to SatelliteLLM web interface for AI analysis",
+    "4. Compare before/after images for change detection",
+    "5. Generate NDVI/NDBI indices for environmental analysis"
+  ],
+  "recommended_software": [
+    "QGIS (free)",
+    "ArcGIS Pro",
+    "ENVI",
+    "Google Earth Pro"
+  ]
+}
