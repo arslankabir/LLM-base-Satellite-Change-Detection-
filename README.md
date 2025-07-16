@@ -1,5 +1,10 @@
 # 🛰️ LLM-based Satellite Change Detection
 
+## 🎥 Demo
+[![Watch the demo](https://img.youtube.com/vi/WPsR9i8HcpM/0.jpg)](https://www.youtube.com/watch?v=WPsR9i8HcpM)
+
+*Click the image above to watch the demo on YouTube*
+
 A powerful AI-driven platform for detecting and analyzing changes in satellite imagery, with specialized capabilities for conflict zone monitoring. Combines computer vision, geospatial analysis, and large language models to provide actionable insights from satellite data.
 
 ## 🌟 Key Features
