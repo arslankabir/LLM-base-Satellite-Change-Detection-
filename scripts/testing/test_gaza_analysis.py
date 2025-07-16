@@ -17,7 +17,7 @@ def test_gaza_analysis():
     print("=" * 50)
     
     # Check if Gaza Strip data exists
-    gaza_data_dir = Path("gaza_strip_data")
+    gaza_data_dir = Path("../data/gaza_strip_data")
     if not gaza_data_dir.exists():
         print("❌ Gaza Strip data directory not found")
         print("💡 Run: python download_gaza_strip_data.py")

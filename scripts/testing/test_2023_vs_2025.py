@@ -18,8 +18,8 @@ def test_2023_vs_2025_analysis():
     print("=" * 60)
     
     # Define the specific files
-    before_file = Path("gaza_high_res/gaza_strip_2023_10m.tif")
-    after_file = Path("gaza_2025_high_res/gaza_strip_2025_10m_20250715_084932.tif")
+    before_file = Path("../data/gaza_high_res/gaza_strip_2023_10m.tif")
+    after_file = Path("../data/gaza_2025_high_res/gaza_strip_2025_10m_20250715_084932.tif")
     
     # Check if files exist
     if not before_file.exists():
@@ -59,7 +59,7 @@ def test_2023_vs_2025_analysis():
                 print("=" * 60)
                 
                 # Save results
-                results_file = Path("gaza_2025_high_res/2023_vs_2025_analysis_results.json")
+                results_file = Path("../data/gaza_2025_high_res/2023_vs_2025_analysis_results.json")
                 results_file.parent.mkdir(exist_ok=True)
                 with open(results_file, 'w') as f:
                     json.dump(result, f, indent=2)
@@ -88,8 +88,8 @@ def main():
     if success:
         print("\n✅ Analysis completed successfully!")
         print("🌐 You can now use the frontend with these same files:")
-        print("   • Before: gaza_high_res/gaza_strip_2023_10m.tif")
-        print("   • After: gaza_2025_high_res/gaza_strip_2025_10m_20250715_084932.tif")
+        print("   • Before: data/gaza_high_res/gaza_strip_2023_10m.tif")
+        print("   • After: data/gaza_2025_high_res/gaza_strip_2025_10m_20250715_084932.tif")
     else:
         print("\n❌ Analysis failed. Check the error messages above.")
 

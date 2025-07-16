@@ -14,8 +14,8 @@ def test_frontend_upload():
     print("=" * 50)
     
     # Check if high-resolution files exist
-    before_file = Path("gaza_high_res/gaza_strip_2023_10m.tif")
-    after_file = Path("gaza_2025_high_res/gaza_strip_2025_10m_20250715_084932.tif")
+    before_file = Path("../data/gaza_high_res/gaza_strip_2023_10m.tif")
+    after_file = Path("../data/gaza_2025_high_res/gaza_strip_2025_10m_20250715_084932.tif")
     
     if not before_file.exists():
         print(f"❌ Before file not found: {before_file}")

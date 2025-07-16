@@ -21,6 +21,10 @@ from typing import Dict, List, Optional, Tuple
 import argparse
 from pathlib import Path
 import time
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class GoogleEarthEngineDownloader:
     """Download high-resolution satellite imagery from Google Earth Engine"""
@@ -31,19 +35,25 @@ class GoogleEarthEngineDownloader:
         
         # Initialize Google Earth Engine
         try:
-            # Try to initialize with user's project ID first
+            # Try to initialize with project ID from environment
+            project_id = os.getenv('GEE_PROJECT_ID')
+            if not project_id:
+                raise ValueError("GEE_PROJECT_ID not found in .env file")
+                
             try:
-                ee.Initialize(project='unique-acronym-445710-k6')
-                print("✅ Google Earth Engine initialized with project: unique-acronym-445710-k6")
-            except:
-                # Fallback to default project
+                ee.Initialize(project=project_id)
+                print(f"✅ Google Earth Engine initialized with project: {project_id}")
+            except Exception as e:
+                print(f"⚠️  Could not initialize with project ID, trying legacy method: {e}")
+                # Fall back to legacy initialization if project ID fails
                 try:
                     ee.Initialize(project='earthengine-legacy')
-                    print("✅ Google Earth Engine initialized with default project")
-                except:
-                    # Fallback to no project (older versions)
+                    print("✅ Google Earth Engine initialized with legacy project")
+                except Exception as e2:
+                    print(f"⚠️  Could not initialize with legacy method, trying default: {e2}")
+                    # Final fallback to default initialization
                     ee.Initialize()
-                    print("✅ Google Earth Engine initialized successfully")
+                    print("✅ Google Earth Engine initialized with default project")
         except Exception as e:
             print(f"❌ Error initializing Google Earth Engine: {e}")
             print("💡 Google Earth Engine uses OAuth2 authentication (no API keys needed!)")

@@ -141,7 +141,6 @@ LLM-based-Satellite-Change-Detection/
     ├── README.md                   # This file
     └── google_earth_engine_auth.md # GEE authentication guide
 ```
-```
 
 ## 🌍 Satellite Data Download
 

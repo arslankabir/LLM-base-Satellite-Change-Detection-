@@ -18,11 +18,15 @@ from typing import Dict, List, Optional, Tuple
 import argparse
 from pathlib import Path
 import time
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class GazaStripDownloader:
     """Download satellite imagery for Gaza Strip area"""
     
-    def __init__(self, output_dir: str = "gaza_strip_data"):
+    def __init__(self, output_dir: str = "../data/gaza_strip_data"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
         
@@ -32,7 +36,10 @@ class GazaStripDownloader:
         
         # Initialize Google Earth Engine
         try:
-            ee.Initialize(project='unique-acronym-445710-k6')
+            project_id = os.getenv('GEE_PROJECT_ID')
+            if not project_id:
+                raise ValueError("GEE_PROJECT_ID not found in .env file")
+            ee.Initialize(project=project_id)
             print("✅ Google Earth Engine initialized for Gaza Strip analysis")
         except Exception as e:
             print(f"❌ Error initializing Google Earth Engine: {e}")

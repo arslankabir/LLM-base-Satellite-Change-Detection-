@@ -86,8 +86,8 @@ def compare_with_previous_results():
     print("\n📊 Comparing High-Resolution vs Low-Resolution Results...")
     
     # Check if previous results exist
-    prev_results_file = Path("gaza_strip_data/gaza_analysis_results.json")
-    high_res_results_file = Path("gaza_high_res/high_res_analysis_results.json")
+    prev_results_file = Path("../data/gaza_strip_data/gaza_analysis_results.json")
+    high_res_results_file = Path("../data/gaza_high_res/high_res_analysis_results.json")
     
     if prev_results_file.exists() and high_res_results_file.exists():
         try:

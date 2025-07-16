@@ -17,6 +17,10 @@ from typing import Dict, List, Optional, Tuple
 import argparse
 from pathlib import Path
 import time
+import dotenv
+
+# Load environment variables from .env file
+dotenv.load_dotenv()
 
 class GazaStrip2025HighResDownloader:
     """Download high-resolution GeoTIFF satellite imagery for Gaza Strip area including 2025"""
@@ -31,8 +35,11 @@ class GazaStrip2025HighResDownloader:
         
         # Initialize Google Earth Engine
         try:
-            ee.Initialize(project='unique-acronym-445710-k6')
-            print("✅ Google Earth Engine initialized for Gaza Strip 2025 high-resolution analysis")
+            project_id = os.getenv('GEE_PROJECT_ID')
+            if not project_id:
+                raise ValueError("GEE_PROJECT_ID not found in .env file")
+            ee.Initialize(project=project_id)
+            print("✅ Google Earth Engine initialized for high-resolution 2025 Gaza analysis")
         except Exception as e:
             print(f"❌ Error initializing Google Earth Engine: {e}")
             return

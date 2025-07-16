@@ -1,3 +1,6 @@
+# Environment variables
+.env
+
 # Virtual Environment
 llmenv/
 venv/
