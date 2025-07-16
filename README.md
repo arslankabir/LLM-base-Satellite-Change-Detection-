@@ -109,25 +109,35 @@ LLM-based-Satellite-Change-Detection/
 ├── requirements.txt                 # Python dependencies
 ├── .env                            # Environment configuration
 │
-├── 📥 Data Download Scripts
-│   ├── download_gaza_strip_data.py      # Gaza Strip satellite data
-│   ├── download_gaza_2025.py            # 2025 Gaza Strip data
-│   ├── download_gaza_2025_high_res.py   # High-res 2025 data
-│   └── gee_setup.py                     # Google Earth Engine setup
+├── scripts/
+│   ├── download/                    # Data download scripts
+│   │   ├── download_gaza_strip_data.py   # Gaza Strip satellite data
+│   │   ├── download_gaza_2025.py         # 2025 Gaza Strip data
+│   │   ├── download_gaza_2025_high_res.py # High-res 2025 data
+│   │   ├── download_google_earth_engine.py
+│   │   ├── download_high_res_gaza.py
+│   │   ├── download_sample_data.py
+│   │   ├── download_satellite_data.py
+│   │   └── gee_setup/               # Google Earth Engine setup
+│   │
+│   └── testing/                     # Testing scripts
+│       ├── test_2023_vs_2025.py     # Specific year comparison test
+│       ├── test_enhanced_system.py  # Enhanced system testing
+│       ├── test_frontend_debug.py   # Frontend debugging
+│       ├── test_gaza_analysis.py    # Standard Gaza analysis
+│       ├── test_google_earth_engine.py
+│       ├── test_high_res_gaza.py    # High-res Gaza analysis
+│       └── test_system.py           # General system testing
 │
-├── 🧪 Testing Scripts
-│   ├── test_high_res_gaza.py            # High-res Gaza analysis
-│   ├── test_gaza_analysis.py            # Standard Gaza analysis
-│   └── test_system.py                   # General system testing
+├── data/
+│   ├── gaza_high_res/              # High-resolution GeoTIFF files
+│   ├── gaza_strip_data/            # Standard resolution data
+│   └── sample_data/                # Sample images for testing
 │
-├── 📊 Data Directories
-│   ├── gaza_high_res/                   # High-resolution GeoTIFF files
-│   ├── gaza_strip_data/                 # Standard resolution data
-│   └── sample_data/                     # Sample images for testing
-│
-└── 📚 Documentation
-    ├── README.md                        # This file
-    └── troubleshooting.md               # Common issues and solutions
+└── docs/
+    ├── README.md                   # This file
+    └── google_earth_engine_auth.md # GEE authentication guide
+```
 ```
 
 ## 🌍 Satellite Data Download
