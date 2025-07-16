@@ -1,4 +1,4 @@
-# 🛰️ LLM-based Satellite Change Detection
+# 🛰️ LLM-powered Satellite Change Detection
 
 ## 🎥 Demo
 [![Watch the demo](https://img.youtube.com/vi/WPsR9i8HcpM/0.jpg)](https://www.youtube.com/watch?v=WPsR9i8HcpM)
