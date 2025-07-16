@@ -130,8 +130,11 @@ LLM-based-Satellite-Change-Detection/
 │       └── test_system.py           # General system testing
 │
 ├── data/
+│   ├── gaza_2025_data/             # 2025 Gaza Strip satellite data
+│   ├── gaza_2025_high_res/         # High-resolution 2025 data
 │   ├── gaza_high_res/              # High-resolution GeoTIFF files
 │   ├── gaza_strip_data/            # Standard resolution data
+│   ├── gee_data/                   # Google Earth Engine exported data
 │   └── sample_data/                # Sample images for testing
 │
 └── docs/
